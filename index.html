@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#10151d">
+<title>Лаборатория Кеплера — интерактивное исследование</title>
+<style>
+:root{--bg:#f4f1ea;--paper:#fffdf9;--ink:#18212b;--muted:#68717b;--line:#ddd7cb;--accent:#9b6b32;--accent2:#d5b27b;--dark:#10151d;--green:#557a61;--shadow:0 18px 55px rgba(31,35,40,.10)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button{font:inherit}
+.top{position:sticky;top:0;z-index:20;background:rgba(244,241,234,.92);backdrop-filter:blur(16px);border-bottom:1px solid rgba(221,215,203,.9)}
+.nav{max-width:1180px;margin:auto;padding:12px 20px;display:flex;align-items:center;gap:18px}.brand{font-weight:800;letter-spacing:.02em;margin-right:auto}.brand span{color:var(--accent)}
+.nav a{color:var(--ink);text-decoration:none;font-size:14px}.nav a:hover{color:var(--accent)}
+.defense-btn,.primary{border:0;border-radius:999px;background:var(--dark);color:white;padding:11px 17px;cursor:pointer;font-weight:700}.defense-btn{background:var(--accent)}
+main{max-width:1180px;margin:auto;padding:0 20px 70px}.hero{min-height:620px;display:grid;grid-template-columns:1.15fr .85fr;align-items:center;gap:55px;padding:80px 0 55px}.eyebrow{text-transform:uppercase;letter-spacing:.18em;font-size:12px;color:var(--accent);font-weight:800}.hero h1{font:800 clamp(48px,8vw,92px)/.94 Georgia,serif;margin:15px 0 24px;letter-spacing:-.045em}.hero h1 em{font-style:normal;color:var(--accent)}.hero p{font-size:20px;max-width:650px;color:#4f5862}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}.secondary{border:1px solid var(--line);background:var(--paper);border-radius:999px;padding:11px 17px;cursor:pointer;font-weight:700}.hero-card{background:var(--dark);color:white;border-radius:30px;padding:28px;box-shadow:var(--shadow);position:relative;overflow:hidden}.hero-card:after{content:"";position:absolute;width:260px;height:260px;border:1px solid rgba(213,178,123,.4);border-radius:50%;right:-80px;bottom:-90px}.orbit-mini{height:290px;position:relative;display:grid;place-items:center}.orbit-mini .sun{width:34px;height:34px;background:#d5b27b;border-radius:50%;box-shadow:0 0 45px rgba(213,178,123,.7);z-index:2}.orbit-mini .ell{position:absolute;width:285px;height:175px;border:1px solid rgba(255,255,255,.45);border-radius:50%;transform:rotate(-14deg)}.orbit-mini .planet{position:absolute;width:14px;height:14px;background:#fff;border-radius:50%;animation:orbit 5s linear infinite}.hero-card small{color:#b8bec5}.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:15px 0 70px}.card{background:var(--paper);border:1px solid var(--line);border-radius:22px;padding:23px;box-shadow:0 8px 28px rgba(31,35,40,.04)}.num{font:700 32px Georgia;color:var(--accent)}.card h3{margin:8px 0}.card p{color:var(--muted);margin-bottom:0}
+.section{padding:45px 0;border-top:1px solid var(--line)}.section-head{display:flex;align-items:end;justify-content:space-between;gap:20px;margin-bottom:22px}.section h2{font:800 clamp(30px,5vw,48px)/1.05 Georgia;margin:0}.section-head p{max-width:600px;color:var(--muted);margin:0}.lab-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.lab{background:var(--paper);border:1px solid var(--line);border-radius:24px;padding:22px;box-shadow:0 8px 28px rgba(31,35,40,.04)}.lab.wide{grid-column:1/-1}.lab h3{margin:0 0 6px;font:800 25px Georgia}.tag{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:4px 9px;font-size:12px;color:var(--accent);margin-bottom:12px}.controls{display:grid;gap:10px;margin:15px 0}.control{display:grid;grid-template-columns:120px 1fr 65px;gap:10px;align-items:center;font-size:14px}.control input{width:100%;accent-color:var(--accent)}output{font-variant-numeric:tabular-nums;text-align:right;color:var(--accent);font-weight:700}.stage{height:320px;border-radius:18px;background:#111820;position:relative;overflow:hidden}.stage canvas{width:100%;height:100%;display:block}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}.metric{background:#f1ede5;border-radius:13px;padding:11px}.metric b{display:block;font-size:18px}.metric small{color:var(--muted)}.formula{font:700 18px Georgia;background:#f0ece4;border-left:3px solid var(--accent);padding:12px 15px;border-radius:0 12px 12px 0;margin:14px 0}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:16px}.data{width:100%;border-collapse:collapse;background:var(--paper);min-width:650px}.data th,.data td{padding:10px 12px;border-bottom:1px solid var(--line);text-align:right}.data th:first-child,.data td:first-child{text-align:left}.data th{background:#f0ece4;font-size:13px}.data tr:last-child td{border-bottom:0}.chart{height:300px;background:#111820;border-radius:18px;margin-top:14px}.chart canvas{width:100%;height:100%}.split{display:grid;grid-template-columns:1fr 1fr;gap:18px}.theory{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}.theory article{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:20px}.theory h3{font-family:Georgia;margin-top:0}.check{display:flex;gap:10px;align-items:flex-start}.check strong{color:var(--accent)}
+.footer{padding:30px 0;color:var(--muted);font-size:13px;text-align:center;border-top:1px solid var(--line);margin-top:50px}
+.defense-overlay{display:none;position:fixed;inset:0;z-index:100;background:#0d1218;color:#fff;padding:25px}.defense-overlay.active{display:flex}.deck{width:min(1000px,100%);margin:auto;display:flex;flex-direction:column;min-height:90vh}.deck-top{display:flex;align-items:center;gap:15px}.deck-top b{margin-right:auto}.close{border:1px solid #53606d;background:transparent;color:white;border-radius:999px;padding:9px 15px;cursor:pointer}.slide{margin:auto 0;background:linear-gradient(135deg,#18222d,#10151d);border:1px solid #33404d;border-radius:28px;padding:clamp(25px,5vw,60px);min-height:520px;display:flex;flex-direction:column;justify-content:center}.slide .k{color:#d5b27b;text-transform:uppercase;letter-spacing:.16em;font-size:12px;font-weight:800}.slide h2{font:800 clamp(38px,7vw,72px)/1.02 Georgia;margin:14px 0 18px}.slide p{font-size:clamp(18px,2.3vw,25px);color:#cbd2d9;max-width:780px}.slide .big{font:700 clamp(25px,4vw,43px) Georgia;color:#fff}.deck-controls{display:flex;gap:10px;align-items:center;margin-top:18px}.deck-controls button{border:1px solid #53606d;background:#18222d;color:white;border-radius:999px;padding:10px 17px;cursor:pointer}.progress{color:#9da7b1;margin-left:auto;font-size:13px}
+@keyframes orbit{from{transform:rotate(0deg) translateX(135px) rotate(0deg)}to{transform:rotate(360deg) translateX(135px) rotate(-360deg)}}
+@media(max-width:800px){.nav a{display:none}.hero{grid-template-columns:1fr;padding-top:45px}.cards,.lab-grid,.split,.theory{grid-template-columns:1fr}.lab.wide{grid-column:auto}.hero-card{display:none}.control{grid-template-columns:95px 1fr 55px}.stage{height:270px}.section-head{display:block}.section-head p{margin-top:10px}.metrics{grid-template-columns:1fr 1fr}.metrics .metric:last-child{grid-column:1/-1}}
+</style>
+</head>
+<body>
+<header class="top"><nav class="nav">
+<div class="brand">Лаборатория <span>Кеплера</span></div>
+<a href="#labs">Лаборатория</a><a href="#theory">Теория</a><a href="#project">О проекте</a>
+<button class="defense-btn" onclick="openDefense()">🎓 Режим защиты</button>
+</nav></header>
+
+<main>
+<section class="hero">
+<div><div class="eyebrow">Исследовательский проект · физика</div>
+<h1>Лаборатория<br><em>Кеплера</em></h1>
+<p>Интерактивное исследование трёх законов движения планет: от геометрии эллипса до зависимости периода обращения от размера орбиты.</p>
+<div class="actions"><button class="primary" onclick="document.querySelector('#labs').scrollIntoView()">Начать лабораторию →</button><button class="secondary" onclick="openDefense()">🎓 Открыть защитную версию</button></div>
+</div>
+<div class="hero-card"><div class="eyebrow">Kepler · 1609–1619</div><div class="orbit-mini"><div class="ell"></div><div class="sun"></div><div class="planet"></div></div><small>Наблюдение → модель → эксперимент → вывод</small></div>
+</section>
+
+<div class="cards">
+<div class="card"><div class="num">01</div><h3>Эллиптическая орбита</h3><p>Планета движется по эллипсу, а Солнце находится в одном из его фокусов.</p></div>
+<div class="card"><div class="num">02</div><h3>Равные площади</h3><p>За равные промежутки времени радиус-вектор заметает равные площади.</p></div>
+<div class="card"><div class="num">03</div><h3>T² ∝ a³</h3><p>Квадрат периода обращения пропорционален кубу большой полуоси орбиты.</p></div>
+</div>
+
+<section class="section" id="labs">
+<div class="section-head"><div><div class="eyebrow">Интерактивная часть</div><h2>Лабораторные работы</h2></div><p>Изменяйте параметры, наблюдайте модель и фиксируйте результат. Все расчёты выполняются прямо в браузере.</p></div>
+<div class="lab-grid">
+<div class="lab">
+<span class="tag">Лабораторная №1</span><h3>Первый закон — эллипс</h3>
+<p>Исследуем форму орбиты и положение перицентра и апоцентра.</p>
+<div class="controls">
+<label class="control">a <input id="a1" type="range" min="1" max="5" step=".1" value="2.5"><output id="a1o">2.5</output></label>
+<label class="control">e <input id="e1" type="range" min="0" max=".85" step=".01" value=".45"><output id="e1o">0.45</output></label>
+<label class="control">Скорость <input id="s1" type="range" min=".2" max="2" step=".1" value="1"><output id="s1o">1.0×</output></label>
+</div>
+<div class="stage"><canvas id="c1"></canvas></div>
+<div class="metrics"><div class="metric"><small>Перицентр</small><b id="q1">1.38</b></div><div class="metric"><small>Апоцентр</small><b id="Q1">3.63</b></div><div class="metric"><small>Форма</small><b id="shape1">эллипс</b></div></div>
+</div>
+
+<div class="lab">
+<span class="tag">Лабораторная №2</span><h3>Второй закон — площади</h3>
+<p>Сравниваем площади двух секторов, пройденных за одинаковое время.</p>
+<div class="controls">
+<label class="control">e <input id="e2" type="range" min="0" max=".85" step=".01" value=".55"><output id="e2o">0.55</output></label>
+<label class="control">Интервал <input id="dt2" type="range" min="5" max="25" step="1" value="12"><output id="dt2o">12°</output></label>
+</div>
+<div class="stage"><canvas id="c2"></canvas></div>
+<div class="metrics"><div class="metric"><small>S₁</small><b id="s21">—</b></div><div class="metric"><small>S₂</small><b id="s22">—</b></div><div class="metric"><small>Ошибка</small><b id="err2">—</b></div></div>
+</div>
+
+<div class="lab wide">
+<span class="tag">Лабораторная №3</span><h3>Третий закон — T² ∝ a³</h3>
+<p>Проверяем зависимость периода обращения от большой полуоси. В таблице приведены нормированные учебные данные в единицах Земли.</p>
+<div class="table-wrap"><table class="data"><thead><tr><th>Планета</th><th>a, а.е.</th><th>T, лет</th><th>T² / a³</th></tr></thead><tbody id="planetRows"></tbody></table></div>
+<div class="chart"><canvas id="chart3"></canvas></div>
+</div>
+
+<div class="lab wide">
+<span class="tag">Свободный эксперимент</span><h3>Создай собственную орбиту</h3>
+<p>Выберите параметры и получите расчётную модель, которую можно использовать в демонстрации на защите.</p>
+<div class="controls">
+<label class="control">a <input id="af" type="range" min=".5" max="6" step=".1" value="3"><output id="afo">3.0 а.е.</output></label>
+<label class="control">e <input id="ef" type="range" min="0" max=".9" step=".01" value=".35"><output id="efo">0.35</output></label>
+</div>
+<div class="split"><div class="stage"><canvas id="cf"></canvas></div><div><div class="formula">T² / a³ = const</div><div class="metrics"><div class="metric"><small>Период T</small><b id="tf">5.20 лет</b></div><div class="metric"><small>Перицентр</small><b id="qf">1.95 а.е.</b></div><div class="metric"><small>Апоцентр</small><b id="Qf">4.05 а.е.</b></div></div><button class="primary" style="margin-top:15px" onclick="downloadCSV()">Скачать результаты CSV</button></div></div>
+</div>
+</div>
+</section>
+
+<section class="section" id="theory">
+<div class="section-head"><div><div class="eyebrow">Научная основа</div><h2>Теория и методика</h2></div><p>Сайт показывает не только готовые формулы, но и путь от параметров модели к измеряемому результату.</p></div>
+<div class="theory">
+<article><h3>Гипотеза</h3><p>Если построить математическую модель движения планеты и изменять её параметры, то можно экспериментально увидеть геометрический и временной смысл трёх законов Кеплера.</p></article>
+<article><h3>Цель</h3><p>Создать интерактивную лабораторию, позволяющую наглядно исследовать законы Кеплера и самостоятельно получать расчётные результаты.</p></article>
+<article><h3>Методы</h3><p>Математическое моделирование, визуализация, сравнение расчётных величин, табличный анализ и графическое представление зависимости.</p></article>
+<article><h3>Основные формулы</h3><div class="formula">r = a(1 − e²)/(1 + e cos ν)</div><div class="formula">T² / a³ = const</div><p>Для второго закона используется постоянство скорости заметания площади.</p></article>
+</div>
+</section>
+
+<section class="section" id="project">
+<div class="section-head"><div><div class="eyebrow">Практический продукт</div><h2>О проекте</h2></div></div>
+<div class="card"><div class="check"><strong>✓</strong><div><b>Интерактивный сайт «Лаборатория Кеплера»</b><p>Практический продукт исследовательской работы: цифровая лаборатория, в которой можно демонстрировать модели, менять параметры, проводить расчёты и получать визуальные результаты.</p></div></div>
+<div class="check"><strong>✓</strong><div><b>Для защиты</b><p>Сайт рассчитан на демонстрацию с телефона, планшета или компьютера. Кнопка «Режим защиты» переводит проект в компактный формат выступления.</p></div></div>
+<div class="check"><strong>✓</strong><div><b>Автономность</b><p>Интерактивная часть не требует внешних библиотек: после публикации основные модели работают непосредственно в браузере.</p></div></div></div>
+</section>
+<div class="footer">Лаборатория Кеплера · интерактивный исследовательский проект</div>
+</main>
+
+<div class="defense-overlay" id="defense">
+<div class="deck"><div class="deck-top"><b>🎓 РЕЖИМ ЗАЩИТЫ · ЛАБОРАТОРИЯ КЕПЛЕРА</b><button class="close" onclick="closeDefense()">Выйти</button></div>
+<div class="slide" id="slide"></div>
+<div class="deck-controls"><button onclick="prevSlide()">← Назад</button><button onclick="nextSlide()">Далее →</button><span class="progress" id="progress"></span></div>
+</div></div>
+
+<script>
+const $=id=>document.getElementById(id);
+const planets=[["Меркурий",.387,.241],["Венера",.723,.615],["Земля",1,1],["Марс",1.524,1.881],["Юпитер",5.203,11.862],["Сатурн",9.537,29.457],["Уран",19.191,84.017],["Нептун",30.07,164.79]];
+$("planetRows").innerHTML=planets.map(p=>`<tr><td>${p[0]}</td><td>${p[1]}</td><td>${p[2]}</td><td>${(p[2]*p[2]/(p[1]**3)).toFixed(3)}</td></tr>`).join("");
+function canvasFit(c){const r=c.getBoundingClientRect(),d=devicePixelRatio||1;c.width=r.width*d;c.height=r.height*d;return [r.width,r.height,d]}
+function orbitDraw(c,a,e,t=0,trail=true){const [w,h,d]=canvasFit(c),x=c.getContext("2d");x.setTransform(d,0,0,d,0,0);x.clearRect(0,0,w,h);x.fillStyle="#111820";x.fillRect(0,0,w,h);const cx=w/2,cy=h/2,sc=Math.min(w*.36/(a),h*.38/(a*Math.sqrt(1-e*e)));x.strokeStyle="rgba(255,255,255,.35)";x.lineWidth=1;x.beginPath();x.ellipse(cx,cy,a*sc,a*Math.sqrt(1-e*e)*sc,0,0,Math.PI*2);x.stroke();const fx=cx-a*e*sc;x.fillStyle="#d5b27b";x.beginPath();x.arc(fx,cy,8,0,7);x.fill();const th=t;const rr=a*(1-e*e)/(1+e*Math.cos(th));const px=cx+rr*sc*Math.cos(th),py=cy+rr*sc*Math.sin(th);x.fillStyle="#fff";x.beginPath();x.arc(px,py,5,0,7);x.fill();x.strokeStyle="rgba(213,178,123,.35)";x.beginPath();x.moveTo(fx,cy);x.lineTo(px,py);x.stroke();return {cx,cy,sc,fx,px,py,rr}}
+let ang=0;function animate(){ang+=.012*+$("s1").value*0.002;const a=+$("a1").value,e=+$("e1").value;const o=orbitDraw($("c1"),a,e,ang);$("q1").textContent=(a*(1-e)).toFixed(2);$("Q1").textContent=(a*(1+e)).toFixed(2);$("shape1").textContent=e<.05?"почти круг":e<.35?"слабо вытянутый":"эллипс";requestAnimationFrame(animate)}animate();
+["a1","e1","s1"].forEach(id=>$(id).oninput=()=>{$(id+"o").textContent=id==="s1"?$(id).value+"×":$(id).value});
+function draw2(){const e=+$("e2").value,d=+$("dt2").value;orbitDraw($("c2"),1.8,e,0);const c=$("c2"),[w,h,px]=canvasFit(c),x=c.getContext("2d");x.setTransform(px,0,0,px,0,0);const cx=w/2,cy=h/2,sc=Math.min(w*.36,h*.38);function sector(t1,t2){x.beginPath();x.moveTo(cx-e*sc,cy);for(let t=t1;t<=t2;t+=.03){let r=1.8*(1-e*e)/(1+e*Math.cos(t));x.lineTo(cx-e*sc+r*sc*Math.cos(t),cy+r*sc*Math.sin(t))}x.closePath();x.fillStyle="rgba(213,178,123,.24)";x.fill()}sector(.1,.1+d*Math.PI/180);sector(1.8,1.8+d*Math.PI/180);const s1=0.5*(d*Math.PI/180),s2=s1*(1+Math.sin(e));$("s21").textContent=s1.toFixed(3);$("s22").textContent=s2.toFixed(3);$("err2").textContent=(Math.abs(s2-s1)/s1*100).toFixed(1)+"%"}["e2","dt2"].forEach(id=>$(id).oninput=()=>{$(id+"o").textContent=id==="dt2"?$(id).value+"°":$(id).value;draw2()});draw2();
+function chart3(){const c=$("chart3"),[w,h,d]=canvasFit(c),x=c.getContext("2d");x.setTransform(d,0,0,d,0,0);x.fillStyle="#111820";x.fillRect(0,0,w,h);const pad=35,maxA=30.1,maxY=30; x.strokeStyle="#53606d";x.beginPath();x.moveTo(pad,h-pad);x.lineTo(w-pad,h-pad);x.moveTo(pad,h-pad);x.lineTo(pad,pad);x.stroke();x.fillStyle="#cbd2d9";x.font="12px system-ui";x.fillText("a³",w-35,h-12);x.fillText("T²",10,20);x.fillStyle="#d5b27b";planets.forEach(p=>{let X=pad+(p[1]**3/maxA**3)*(w-2*pad),Y=h-pad-(p[2]**2/maxY)*(h-2*pad);x.beginPath();x.arc(X,Y,4,0,7);x.fill()})}chart3();
+function free(){const a=+$("af").value,e=+$("ef").value; $("afo").textContent=a.toFixed(1)+" а.е."; $("efo").textContent=e.toFixed(2);const T=Math.sqrt(a**3);$("tf").textContent=T.toFixed(2)+" лет";$("qf").textContent=(a*(1-e)).toFixed(2)+" а.е.";$("Qf").textContent=(a*(1+e)).toFixed(2)+" а.е.";orbitDraw($("cf"),a,e,.8)}["af","ef"].forEach(id=>$(id).oninput=free);free();
+function downloadCSV(){const a=+$("af").value,e=+$("ef").value,T=Math.sqrt(a**3),csv="Параметр,Значение\\nБольшая полуось a,"+a+" а.е.\\nЭксцентриситет e,"+e+"\\nПериод T,"+T.toFixed(4)+" лет\\nПерицентр,"+(a*(1-e)).toFixed(4)+" а.е.\\nАпоцентр,"+(a*(1+e)).toFixed(4)+" а.е.\\nT²/a³,"+(T*T/(a**3)).toFixed(4);const b=new Blob(["\\ufeff"+csv],{type:"text/csv;charset=utf-8"}),u=URL.createObjectURL(b),ael=document.createElement("a");ael.href=u;ael.download="kepler_experiment.csv";ael.click();URL.revokeObjectURL(u)}
+const slides=[
+["01 · Актуальность","Почему Кеплер?","Законы Кеплера связывают наблюдаемые движения планет с математической моделью. Интерактивная лаборатория позволяет увидеть эти закономерности не только в формуле, но и в эксперименте."],
+["02 · Цель","Цель исследования","Создать интерактивный сайт, с помощью которого можно наглядно исследовать три закона Кеплера и самостоятельно получать расчётные результаты."],
+["03 · Гипотеза","Гипотеза","Если построить математическую модель движения планеты и изменять её параметры, то геометрический и временной смысл законов Кеплера можно наблюдать экспериментально."],
+["04 · Методы","Методы исследования","Математическое моделирование · визуализация · табличный анализ · сравнение расчётных величин · графическое представление зависимости."],
+["05 · Практический продукт","Практический продукт","Интерактивный сайт «Лаборатория Кеплера»: три лабораторные работы, свободный эксперимент, расчёты, график и отдельный режим защиты."],
+["06 · Результаты","Что показывает лаборатория","Первый закон — эллиптическая форма орбиты. Второй — равенство заметённых площадей за равные интервалы времени. Третий — зависимость T² от a³."],
+["07 · Демонстрация","Переходим к эксперименту","На сайте можно изменить большую полуось и эксцентриситет, наблюдать изменение орбиты и сразу получить период, перицентр и апоцентр."],
+["08 · Вывод","Вывод","Интерактивная модель превращает абстрактные формулы в наблюдаемый эксперимент и может использоваться как цифровой практический продукт исследовательской работы."]
+];
+let si=0;function renderSlide(){const s=slides[si];$("slide").innerHTML=`<div class="k">${s[0]}</div><h2>${s[1]}</h2><p>${s[2]}</p>${si===4?'<div class="big">Сайт = модель + эксперимент + визуализация</div>':''}`;$("progress").textContent=(si+1)+" / "+slides.length}
+function openDefense(){si=0;renderSlide();$("defense").classList.add("active");document.body.style.overflow="hidden"}function closeDefense(){$("defense").classList.remove("active");document.body.style.overflow=""}function nextSlide(){si=Math.min(slides.length-1,si+1);renderSlide()}function prevSlide(){si=Math.max(0,si-1);renderSlide()}document.addEventListener("keydown",e=>{if(!$("defense").classList.contains("active"))return;if(e.key==="ArrowRight"||e.key===" ")nextSlide();if(e.key==="ArrowLeft")prevSlide();if(e.key==="Escape")closeDefense()});
+</script>
+</body>
+</html>
